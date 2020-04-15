@@ -3,6 +3,7 @@ package controllers
 import (
     "encoding/json"
     "fmt"
+    "io"
     "net/http"
     "strings"
     "DHTWeather/repositories"
@@ -32,7 +33,14 @@ func getResponse(w http.ResponseWriter, r *http.Request) {
         fmt.Println("key:", k)
         fmt.Println("val:", strings.Join(v, ""))
     }
-    fmt.Fprintf(w, "<h1>Hello, World!</h1>") // send data to client side
+    rep:= repositories.NewDhtReadingRepository()
+    readings, err := rep.FindAll()
+    if err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        w.Write([]byte(err.Error()))
+        return
+    }
+    encodeResponseAsJSON(readings, w)
 }
 
 func postRequest(w http.ResponseWriter, r *http.Request) {
@@ -67,4 +75,9 @@ func ReadingsHandler(w http.ResponseWriter, r *http.Request) {
     rep.Close()
     
     fmt.Fprintf(w, "Readings")
+}
+
+func encodeResponseAsJSON(data interface{}, w io.Writer) {
+    enc := json.NewEncoder(w)
+    enc.Encode(data)
 }

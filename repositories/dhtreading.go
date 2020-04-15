@@ -22,8 +22,13 @@ func (rp *DhtReadingRepository) Close() {
 }
 
 func (rp *DhtReadingRepository) Save(r models.Reading) error {
-    err := InsertReading(rp.db, r)
+    err := insertReading(rp.db, r)
     return err
+}
+
+func (rp *DhtReadingRepository) FindAll() ([]models.Reading, error) {
+    readings, err := findAllReadings(rp.db)
+    return readings, err
 }
 
 /*Create mysql connection*/
@@ -38,7 +43,7 @@ func createCon() *sql.DB {
     return db
 }
 
-func InsertReading(db *sql.DB, r models.Reading) error {
+func insertReading(db *sql.DB, r models.Reading) error {
     // perform a db.Query insert
     // TODO: Convert to Stored Procedures
     insertQuery := fmt.Sprintf("INSERT INTO readings(createdate, nodeid, temperature, humidity) VALUES ( '%s', %d, %f, %f )", r.ReadingDate, r.NodeId, r.Temperature, r.Humidity)
@@ -58,7 +63,7 @@ func InsertReading(db *sql.DB, r models.Reading) error {
     return nil
 }
 
-func FindAllReadings(db *sql.DB) ([]models.Reading, error) {
+func findAllReadings(db *sql.DB) ([]models.Reading, error) {
     selectQuery := fmt.Sprintf("SELECT id, createdate, nodeid, temperature, humidity FROM readings")
     
     sel, err := db.Query(selectQuery)
