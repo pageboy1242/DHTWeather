@@ -1,4 +1,4 @@
-FROM mariadb
+FROM mysql
 # Add a database
 ENV MYSQL_DATABASE DHT
 
