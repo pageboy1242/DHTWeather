@@ -1,13 +1,13 @@
 package controllers
 
 import (
+    "DHTWeather/models"
+    "DHTWeather/repositories"
     "encoding/json"
     "fmt"
     "io"
     "net/http"
     "strings"
-    "DHTWeather/repositories"
-    "DHTWeather/models"
 )
 
 func SayhelloName(w http.ResponseWriter, r *http.Request) {

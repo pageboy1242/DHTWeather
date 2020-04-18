@@ -1,9 +1,9 @@
 package main
 
 import (
-    "net/http"
-    "log"
     "DHTWeather/controllers"
+    "log"
+    "net/http"
 )
 
 func main() {
