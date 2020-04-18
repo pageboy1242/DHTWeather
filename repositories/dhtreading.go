@@ -33,7 +33,7 @@ func (rp *DhtReadingRepository) FindAll() ([]models.Reading, error) {
 
 /*Create mysql connection*/
 func createCon() *sql.DB {
-    db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/DHT")
+    db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/DHT")
     
     if err != nil {
         panic(err.Error())
